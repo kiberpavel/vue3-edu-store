@@ -19,10 +19,10 @@
         </p>
         <button
             @click="addToCart"
-            :disabled="!isAvailable"
-            :class="`btn ${isAvailable ? 'btn-success' : 'btn-secondary'} w-100 shadow-none`"
+            :disabled="!isAvailable || isInCart"
+            :class="`btn ${(isAvailable  && !isInCart) ? 'btn-success' : 'btn-secondary'} w-100 shadow-none`"
         >
-          {{isAvailable ? 'Add to cart' : 'Added'}}
+          {{ !isInCart ? 'Add to cart' : 'Added'}}
         </button>
       </div>
     </div>
@@ -47,14 +47,19 @@ export default {
     } ,isAvailable:{
       type:Boolean,
     },
+    id: {
+      type: Number
+    }
   },
   methods:{
     addToCart(){
       this.$emit('add-to-cart');
     },
-    // Click(){
-    //   console.log('Click');
-    // },
+  },
+  computed:{
+    isInCart(){
+      return this.$root.isInCart(this.id);
+    }
   }
 }
 </script>
